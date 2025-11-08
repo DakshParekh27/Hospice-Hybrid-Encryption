@@ -1,0 +1,106 @@
+# -------------------------
+# General
+# -------------------------
+.DS_Store
+Thumbs.db
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+.env
+.env.*
+!.env.example
+
+# OS generated files
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# -------------------------
+# Node.js (frontend + backend)
+# -------------------------
+node_modules/
+dist/
+build/
+.cache/
+.next/
+out/
+coverage/
+.tmp/
+.vscode/
+.idea/
+*.tsbuildinfo
+
+# -------------------------
+# Frontend (React / Vite / Next.js)
+# -------------------------
+# Dependencies
+frontend/node_modules/
+frontend/.vite/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+frontend/coverage/
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+# -------------------------
+# Backend (Express / FastAPI / Django / Flask)
+# -------------------------
+# Node backend
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/.env
+backend/.env.local
+
+# Python backend (if any)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.sqlite
+*.egg-info/
+instance/
+backend/venv/
+backend/.venv/
+backend/env/
+backend/.env.*
+backend/.pytest_cache/
+
+# -------------------------
+# IDEs and Editors
+# -------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# -------------------------
+# Misc
+# -------------------------
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.bak
+*.tmp
+*.swp
+
+# -------------------------
+# Local development files
+# -------------------------
+*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

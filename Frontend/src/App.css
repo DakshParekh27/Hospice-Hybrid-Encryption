@@ -1,0 +1,193 @@
+/* Encryption Setup Styles */
+.encryption-setup {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border: 2px solid #007bff;
+}
+
+.encryption-setup h3 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.encryption-setup p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* File Upload Styles */
+.file-upload-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.file-upload-container h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group select,
+.form-group input[type="file"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+button:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Status Messages */
+.status-message {
+  margin-top: 15px;
+  padding: 10px;
+  background: #e7f3ff;
+  border-left: 4px solid #007bff;
+  color: #004085;
+  border-radius: 4px;
+}
+
+.error-message {
+  padding: 10px;
+  background: #f8d7da;
+  border-left: 4px solid #dc3545;
+  color: #721c24;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+/* Reports Section */
+.reports-section {
+  margin-top: 30px;
+}
+
+.reports-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reports-list {
+  display: grid;
+  gap: 15px;
+}
+
+.report-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.3s;
+}
+
+.report-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-item p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.report-item strong {
+  color: #333;
+}
+
+.encrypted-badge {
+  display: inline-block;
+  background: #28a745;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* Profile Sections */
+.profile-info {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.upload-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.upload-section h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.upload-section select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-upload-container,
+  .encryption-setup,
+  .upload-section {
+    padding: 15px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
