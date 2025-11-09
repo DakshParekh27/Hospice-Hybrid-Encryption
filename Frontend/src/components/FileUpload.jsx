@@ -139,11 +139,11 @@ const FileUpload = ({ patientId, doctorId, onUploadSuccess }) => {
       {doctorPublicKey && (
         <div style={{
           padding: '1rem',
-          background: '#d4edda',
-          borderLeft: '4px solid #28a745',
+          background: '#f8f9fa',
+          borderLeft: '4px solid #047857',
           borderRadius: '8px',
           marginBottom: '1.5rem',
-          color: '#155724',
+          color: '#333',
           fontSize: '0.9rem'
         }}>
           ✅ Doctor's encryption key verified. Your file will be encrypted before upload.
@@ -181,9 +181,9 @@ const FileUpload = ({ patientId, doctorId, onUploadSuccess }) => {
             background: '#f8f9fa',
             borderRadius: '6px',
             fontSize: '0.9rem',
-            color: '#666'
+            color: '#555'
           }}>
-            📎 Selected: <strong>{file.name}</strong> ({(file.size / 1024).toFixed(2)} KB)
+            📎 Selected: <strong style={{ color: '#333' }}>{file.name}</strong> ({(file.size / 1024).toFixed(2)} KB)
           </div>
         )}
       </div>
@@ -193,14 +193,14 @@ const FileUpload = ({ patientId, doctorId, onUploadSuccess }) => {
           <div style={{
             width: '100%',
             height: '8px',
-            background: '#e0e0e0',
+            background: 'rgba(255,255,255,0.02)',
             borderRadius: '10px',
             overflow: 'hidden'
           }}>
             <div style={{
               width: `${uploadProgress}%`,
               height: '100%',
-              background: 'linear-gradient(90deg, #667eea, #764ba2)',
+              background: 'linear-gradient(90deg, var(--primary), var(--primary-700))',
               transition: 'width 0.3s ease',
               borderRadius: '10px'
             }}></div>
@@ -249,11 +249,11 @@ const FileUpload = ({ patientId, doctorId, onUploadSuccess }) => {
       <div style={{
         marginTop: '1.5rem',
         padding: '1rem',
-        background: '#fff3cd',
-        borderLeft: '4px solid #ffc107',
+        background: 'linear-gradient(90deg, rgba(6,95,70,0.02), rgba(4,120,87,0.01))',
+        borderLeft: '4px solid rgba(6,95,70,0.12)',
         borderRadius: '8px',
         fontSize: '0.85rem',
-        color: '#856404'
+        color: 'var(--muted)'
       }}>
         <strong>🔒 Security Note:</strong> Your file is encrypted on your device before upload. 
         Only the selected doctor can decrypt and view this file using their private key.

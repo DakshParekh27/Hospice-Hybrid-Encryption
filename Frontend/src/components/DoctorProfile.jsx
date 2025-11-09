@@ -21,10 +21,10 @@ const DoctorProfile = () => {
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    Auth.logout();
-    navigate('/');
-  };
+  const handleLogout = async () => {
+  await Auth.logout();
+  navigate('/');
+};
 
   const fetchProfile = async () => {
     try {
@@ -267,17 +267,17 @@ const DoctorProfile = () => {
               )}
             </button>
             
-            <div style={{ 
-              marginTop: '1rem',
-              padding: '0.75rem',
-              background: 'rgba(255, 193, 7, 0.1)',
-              borderLeft: '4px solid #ffc107',
-              borderRadius: '8px',
-              fontSize: '0.9rem',
-              color: '#856404'
-            }}>
-              ⚠️ <strong>Important:</strong> Remember this password. It cannot be recovered if lost!
-            </div>
+              <div style={{ 
+                marginTop: '1rem',
+                padding: '0.75rem',
+                background: 'linear-gradient(90deg, rgba(6,95,70,0.02), rgba(4,120,87,0.01))',
+                borderLeft: '4px solid rgba(6,95,70,0.12)',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                color: 'var(--muted)'
+              }}>
+                ⚠️ <strong>Important:</strong> Remember this password. It cannot be recovered if lost!
+              </div>
           </div>
         )}
 
@@ -299,9 +299,10 @@ const DoctorProfile = () => {
                         <span style={{ 
                           marginLeft: '0.5rem',
                           padding: '0.25rem 0.75rem',
-                          background: '#667eea15',
+                          background: 'rgba(6,95,70,0.06)',
                           borderRadius: '12px',
-                          fontSize: '0.9rem'
+                          fontSize: '0.9rem',
+                          color: 'var(--text)'
                         }}>
                           {report.reportType}
                         </span>

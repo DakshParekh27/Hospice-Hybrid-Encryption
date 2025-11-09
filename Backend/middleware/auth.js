@@ -9,6 +9,7 @@ dotenv.config();
 exports.protect = async (req, res, next) => {
   let token;
 
+  // Extract Bearer token if provided
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -16,24 +17,33 @@ exports.protect = async (req, res, next) => {
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return res.status(401).json({ message: 'Not authorized, token missing' });
+  // 🔒 Early validation to prevent "jwt malformed" errors
+  if (
+    !token ||
+    token === 'null' ||
+    token === 'undefined' ||
+    token.trim() === ''
+  ) {
+    return res.redirect('/');
   }
 
   try {
+    // Verify token validity
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    // Check if the user exists
     const user = await User.findById(decoded.id).select('-password');
     if (!user) {
       return res.status(401).json({ message: 'Not authorized, user not found' });
     }
 
-    // attach user information and any linked doctor/patient ids
+    // Attach user info to request
     req.user = {
       id: user._id,
-      role: user.role
+      role: user.role,
     };
 
+    // Attach doctor or patient IDs if applicable
     if (user.role === 'doctor') {
       const doctor = await Doctor.findOne({ user: user._id });
       if (doctor) req.user.doctorId = doctor._id;
@@ -46,11 +56,19 @@ exports.protect = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.error('Auth middleware error:', err);
+    console.error('Auth middleware error:', err.message);
+    // More specific error response
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Session expired. Please log in again.' });
+    }
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token format.' });
+    }
     return res.status(401).json({ message: 'Not authorized, token invalid' });
   }
 };
 
+// Role-based authorization middleware
 exports.authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {

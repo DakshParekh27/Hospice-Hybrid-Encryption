@@ -10,11 +10,11 @@ const Landing = () => {
       <div className="card" style={{ 
         maxWidth: '600px', 
         margin: '2rem auto',
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)'
+        background: 'var(--card-bg)',
+        backdropFilter: 'blur(6px)'
       }}>
         <div style={{ textAlign: 'left' }}>
-          <h3 style={{ color: '#667eea', marginBottom: '1rem', fontSize: '1.5rem' }}>
+          <h3 style={{ color: 'var(--primary-700)', marginBottom: '1rem', fontSize: '1.5rem' }}>
             ✨ Features
           </h3>
           <ul style={{ 
@@ -50,9 +50,9 @@ const Landing = () => {
         </Link>
         <Link to="/register">
           <button className="secondary" style={{
-            background: 'white',
-            color: '#667eea',
-            border: '2px solid white'
+            background: 'transparent',
+            color: 'var(--primary-700)',
+            border: '2px solid rgba(255,255,255,0.06)'
           }}>
             Create New Account
           </button>

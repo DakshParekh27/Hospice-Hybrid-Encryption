@@ -5,11 +5,24 @@
   padding: 0;
 }
 
+:root {
+  /* Dark green + black theme */
+  --bg-color: #050505; /* almost black */
+  --surface: #0b0f0b; /* dark surface */
+  --primary: #065f46; /* dark green (emerald-700) */
+  --primary-700: #047857; /* slightly lighter */
+  --accent: #064e3b; /* deeper green */
+  --muted: #9aa19a; /* muted text */
+  --card-bg: #07110a;
+  --text: #e6f7ef; /* light text */
+  --danger: #dc3545;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(6,95,70,0.12), transparent), linear-gradient(180deg, var(--bg-color) 0%, #000000 100%);
   min-height: 100vh;
-  color: #333;
+  color: var(--text);
 }
 
 #root {
@@ -18,10 +31,9 @@ body {
 
 /* Main Navigation */
 .main-nav {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  background: linear-gradient(90deg, var(--primary-700), var(--primary));
   padding: 1rem 2rem;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 30px rgba(4,120,87,0.25);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -31,17 +43,17 @@ body {
 }
 
 .main-nav a {
-  color: #667eea;
+  color: rgba(230,247,239,0.95);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.18s ease;
   position: relative;
 }
 
 .main-nav a:hover {
-  background: #667eea;
+  background: rgba(255,255,255,0.06);
   color: white;
   transform: translateY(-2px);
 }
@@ -59,12 +71,13 @@ main {
 
 /* Card Container */
 .card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
   padding: 2rem;
   margin-bottom: 2rem;
   animation: slideIn 0.5s ease-out;
+  border: 1px solid rgba(6,95,70,0.08);
 }
 
 @keyframes slideIn {
@@ -84,12 +97,12 @@ main {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
   margin-bottom: 2rem;
 }
 
 .profile-header h2 {
-  color: #667eea;
+  color: var(--primary-700);
   font-size: 2rem;
   font-weight: 700;
   display: flex;
@@ -104,11 +117,11 @@ main {
 
 /* Profile Info */
 .profile-info {
-  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  background: linear-gradient(135deg, rgba(6,95,70,0.04) 0%, rgba(4,120,87,0.02) 100%);
   padding: 1.5rem;
   border-radius: 12px;
   margin-bottom: 2rem;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid var(--primary);
 }
 
 .profile-info p {
@@ -128,11 +141,11 @@ main {
 
 /* Encryption Setup Styles */
 .encryption-setup {
-  background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+  background: linear-gradient(135deg, rgba(6,95,70,0.03) 0%, rgba(4,120,87,0.02) 100%);
   padding: 2rem;
   border-radius: 16px;
   margin: 2rem 0;
-  border: 2px solid #667eea;
+  border: 1px solid rgba(6,95,70,0.12);
   position: relative;
   overflow: hidden;
 }
@@ -147,7 +160,7 @@ main {
 }
 
 .encryption-setup h3 {
-  color: #667eea;
+  color: var(--primary-700);
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
   font-weight: 700;
@@ -166,6 +179,7 @@ main {
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   margin: 2rem 0;
+  color: #333;
 }
 
 .file-upload-container h3 {
@@ -178,8 +192,44 @@ main {
   gap: 0.5rem;
 }
 
+.file-upload-container input,
+.file-upload-container select,
+.file-upload-container textarea {
+  color: #333 !important;
+  background: #fff !important;
+  border: 1px solid #ccc !important;
+}
+
+.file-upload-container label {
+  color: #333 !important;
+}
+
+.file-upload-container div[style*="background: linear-gradient"] {
+  background: #f8f9fa !important;
+  border-left: 4px solid #047857 !important;
+  color: #333 !important;
+}
+
+.file-upload-container div[style*="background: rgba"] {
+  background: #f8f9fa !important;
+  color: #555 !important;
+}
+
 .file-upload-container h3::before {
   content: '📄';
+}
+
+.file-upload-container .form-group input::placeholder {
+  color: #666;
+}
+
+.file-upload-container select option {
+  background: white;
+  color: #333;
+}
+
+.file-upload-container .form-group {
+  color: #333;
 }
 
 .form-group {
@@ -201,18 +251,48 @@ main {
 .form-group input[type="text"] {
   width: 100%;
   padding: 0.875rem;
-  border: 2px solid #e0e0e0;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: white;
+  background: transparent;
+  color: var(--text);
 }
 
 .form-group select:focus,
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(6,95,70,0.1);
+}
+
+select {
+  width: 100%;
+  padding: 0.875rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: var(--card-bg);
+  color: var(--text);
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e6f7ef' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(6,95,70,0.1);
+}
+
+select option {
+  background: var(--card-bg);
+  color: var(--text);
+  padding: 0.5rem;
 }
 
 .form-group input[type="file"] {
@@ -222,16 +302,16 @@ main {
 
 /* Button Styles */
 button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
   color: white;
   padding: 0.875rem 1.75rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  font-weight: 700;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 6px 20px rgba(4,120,87,0.22);
   position: relative;
   overflow: hidden;
 }
@@ -243,8 +323,8 @@ button::before {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transition: left 0.35s;
 }
 
 button:hover:not(:disabled)::before {
@@ -253,7 +333,7 @@ button:hover:not(:disabled)::before {
 
 button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 8px 28px rgba(4,120,87,0.28);
 }
 
 button:active:not(:disabled) {
@@ -261,21 +341,21 @@ button:active:not(:disabled) {
 }
 
 button:disabled {
-  background: linear-gradient(135deg, #ccc 0%, #aaa 100%);
+  background: linear-gradient(135deg, #222 0%, #111 100%);
   cursor: not-allowed;
   box-shadow: none;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 button.secondary {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  background: transparent;
+  color: var(--primary-700);
+  border: 2px solid rgba(6,95,70,0.18);
   box-shadow: none;
 }
 
 button.secondary:hover:not(:disabled) {
-  background: #667eea;
+  background: linear-gradient(90deg, var(--primary), var(--primary-700));
   color: white;
 }
 
@@ -288,9 +368,9 @@ button.danger {
 .status-message {
   margin-top: 1rem;
   padding: 1rem;
-  background: linear-gradient(135deg, #e7f3ff 0%, #d4e9ff 100%);
-  border-left: 4px solid #172669;
-  color: #004085;
+  background: linear-gradient(135deg, rgba(4,120,87,0.06) 0%, rgba(6,95,70,0.04) 100%);
+  border-left: 4px solid var(--primary);
+  color: var(--text);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -306,9 +386,9 @@ button.danger {
 .error-message,
 .error {
   padding: 1rem;
-  background: linear-gradient(135deg, #fee 0%, #fdd 100%);
-  border-left: 4px solid #dc3545;
-  color: #721c24;
+  background: linear-gradient(135deg, rgba(220,53,69,0.06) 0%, rgba(220,53,69,0.03) 100%);
+  border-left: 4px solid var(--danger);
+  color: var(--danger);
   border-radius: 10px;
   margin-bottom: 1rem;
   animation: shake 0.5s ease;
@@ -327,7 +407,7 @@ button.danger {
 
 .reports-section h3 {
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--text);
   font-size: 1.5rem;
   font-weight: 700;
   display: flex;
@@ -346,10 +426,10 @@ button.danger {
 }
 
 .report-item {
-  background: white;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 2px solid #f0f0f0;
+  border: 1px solid rgba(255,255,255,0.03);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -362,15 +442,15 @@ button.danger {
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-700) 100%);
   transform: scaleY(0);
   transition: transform 0.3s ease;
 }
 
 .report-item:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   transform: translateY(-4px);
-  border-color: #667eea;
+  border-color: var(--primary);
 }
 
 .report-item:hover::before {
@@ -379,7 +459,7 @@ button.danger {
 
 .report-item p {
   margin: 0.5rem 0;
-  color: #555;
+  color: var(--muted);
   font-size: 0.95rem;
 }
 
@@ -397,14 +477,14 @@ button.danger {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-700) 100%);
   color: white;
   padding: 0.375rem 0.875rem;
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 600;
   margin-top: 0.75rem;
-  box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+  box-shadow: 0 2px 8px rgba(4,120,87,0.24);
 }
 
 .encrypted-badge::before {
@@ -413,16 +493,16 @@ button.danger {
 
 /* Upload Section */
 .upload-section {
-  background: white;
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
   margin-bottom: 2rem;
 }
 
 .upload-section h3 {
   margin-bottom: 1rem;
-  color: #333;
+  color: var(--text);
   font-size: 1.5rem;
   font-weight: 700;
   display: flex;
@@ -435,7 +515,7 @@ button.danger {
 }
 
 .upload-section > p {
-  color: #666;
+  color: var(--muted);
   margin-bottom: 1rem;
 }
 
@@ -443,7 +523,7 @@ button.danger {
   width: 100%;
   padding: 0.875rem;
   margin: 0.75rem 0;
-  border: 2px solid #e0e0e0;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -451,8 +531,8 @@ button.danger {
 
 .upload-section select:focus {
   outline: none;
-  border-color: #1a2555;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(6,95,70,0.06);
 }
 
 .upload-section button {
@@ -462,17 +542,17 @@ button.danger {
 
 /* Auth Forms */
 .auth-form {
-  background: white;
+  background: var(--card-bg);
   padding: 3rem;
   border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
   max-width: 450px;
   margin: 2rem auto;
   animation: slideIn 0.5s ease-out;
 }
 
 .auth-form h3 {
-  color: #192351;
+  color: var(--primary-700);
   margin-bottom: 2rem;
   font-size: 2rem;
   font-weight: 700;
@@ -495,17 +575,19 @@ button.danger {
 .auth-form select {
   width: 100%;
   padding: 0.875rem;
-  border: 2px solid #e0e0e0;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
+  background: transparent;
+  color: var(--text);
 }
 
 .auth-form input:focus,
 .auth-form select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(6,95,70,0.06);
 }
 
 .auth-form button {

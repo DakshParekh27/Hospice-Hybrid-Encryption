@@ -36,7 +36,7 @@ const Register = ({ onSuccess }) => {
           {role === 'doctor' ? '👨‍⚕️' : '🧑‍💼'}
         </div>
         <h3>Create Account</h3>
-        <p style={{ color: '#666', marginTop: '0.5rem' }}>
+        <p style={{ color: 'var(--muted)', marginTop: '0.5rem' }}>
           Join MediCrypt to secure your medical records
         </p>
       </div>
@@ -94,10 +94,10 @@ const Register = ({ onSuccess }) => {
         {role === 'doctor' && (
           <div style={{ 
             animation: 'fadeIn 0.3s ease',
-            background: '#f8f9fa',
+            background: 'rgba(255,255,255,0.02)',
             padding: '1rem',
             borderRadius: '10px',
-            border: '2px dashed #667eea'
+            border: '2px dashed rgba(6,95,70,0.18)'
           }}>
             <label>Medical Specialization</label>
             <input 
@@ -105,7 +105,7 @@ const Register = ({ onSuccess }) => {
               onChange={(e) => setSpecialization(e.target.value)}
               placeholder="e.g., Cardiology, Neurology"
             />
-            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block' }}>
+            <small style={{ color: 'var(--muted)', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block' }}>
               Your area of medical expertise
             </small>
           </div>
@@ -127,14 +127,14 @@ const Register = ({ onSuccess }) => {
         marginTop: '1.5rem', 
         textAlign: 'center',
         paddingTop: '1.5rem',
-        borderTop: '1px solid #e0e0e0'
+        borderTop: '1px solid rgba(255,255,255,0.03)'
       }}>
-        <p style={{ color: '#666', fontSize: '0.95rem' }}>
+        <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>
           Already have an account?{' '}
           <Link to="/login" style={{ 
-            color: '#667eea', 
+            color: 'var(--primary-700)', 
             textDecoration: 'none',
-            fontWeight: '600'
+            fontWeight: '700'
           }}>
             Sign in here
           </Link>

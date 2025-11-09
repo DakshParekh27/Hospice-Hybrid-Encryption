@@ -19,10 +19,10 @@ const PatientProfile = () => {
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    Auth.logout();
-    navigate('/');
-  };
+  const handleLogout = async () => {
+  await Auth.logout();
+  navigate('/');
+};
 
   const fetchProfile = async () => {
     try {
@@ -146,9 +146,9 @@ const PatientProfile = () => {
           
           {!showUpload ? (
             <>
-              <p style={{ color: '#666', marginBottom: '1rem' }}>
-                Share your medical reports securely with your doctor using end-to-end encryption.
-              </p>
+                  <p style={{ color: 'var(--muted)', marginBottom: '1rem' }}>
+                    Share your medical reports securely with your doctor using end-to-end encryption.
+                  </p>
               
               <div className="form-group">
                 <label>Select Doctor to Share With</label>
@@ -176,10 +176,10 @@ const PatientProfile = () => {
                 <div style={{
                   marginTop: '1rem',
                   padding: '1rem',
-                  background: '#fff3cd',
-                  borderLeft: '4px solid #ffc107',
+                  background: 'linear-gradient(90deg, rgba(6,95,70,0.02), rgba(4,120,87,0.01))',
+                  borderLeft: '4px solid rgba(6,95,70,0.12)',
                   borderRadius: '8px',
-                  color: '#856404'
+                  color: 'var(--muted)'
                 }}>
                   ℹ️ No doctors available. Please contact administrator.
                 </div>
@@ -218,10 +218,10 @@ const PatientProfile = () => {
               <div style={{ 
                 marginBottom: '1rem',
                 padding: '0.75rem',
-                background: '#d4edda',
-                borderLeft: '4px solid #28a745',
+                background: 'linear-gradient(90deg, rgba(6,95,70,0.04), rgba(4,120,87,0.02))',
+                borderLeft: '4px solid var(--primary)',
                 borderRadius: '8px',
-                color: '#155724',
+                color: 'var(--text)',
                 fontSize: '0.9rem'
               }}>
                 ✅ All reports are encrypted end-to-end. Only you and the designated doctor can access them.
@@ -236,9 +236,10 @@ const PatientProfile = () => {
                         <span style={{ 
                           marginLeft: '0.5rem',
                           padding: '0.25rem 0.75rem',
-                          background: '#667eea15',
+                          background: 'rgba(6,95,70,0.06)',
                           borderRadius: '12px',
-                          fontSize: '0.9rem'
+                          fontSize: '0.9rem',
+                          color: 'var(--text)'
                         }}>
                           {report.reportType}
                         </span>
