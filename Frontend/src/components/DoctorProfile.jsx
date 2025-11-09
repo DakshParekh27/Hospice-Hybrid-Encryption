@@ -23,7 +23,6 @@ const DoctorProfile = () => {
 
   const handleLogout = () => {
     Auth.logout();
-    // return to landing page (login/register)
     navigate('/');
   };
 
@@ -59,32 +58,27 @@ const DoctorProfile = () => {
 
   const generateEncryptionKeys = async () => {
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      alert('⚠️ Passwords do not match');
       return;
     }
 
     if (password.length < 8) {
-      alert('Password must be at least 8 characters long');
+      alert('⚠️ Password must be at least 8 characters long');
       return;
     }
 
     try {
       setGeneratingKeys(true);
 
-      // Generate RSA key pair
       const keyPair = await CryptoManager.generateKeyPair();
-      
-      // Export keys
       const publicKeyBase64 = await CryptoManager.exportPublicKey(keyPair.publicKey);
       const privateKeyBase64 = await CryptoManager.exportPrivateKey(keyPair.privateKey);
       
-      // Encrypt private key with password
       const { encryptedPrivateKey, iv, salt } = await CryptoManager.encryptPrivateKeyWithPassword(
         privateKeyBase64,
         password
       );
 
-      // Send to backend
       const token = localStorage.getItem('token');
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/encryption/generate-keypair`,
@@ -99,13 +93,13 @@ const DoctorProfile = () => {
         }
       );
 
-      alert('Encryption keys generated successfully! Please remember your password.');
+      alert('✅ Encryption keys generated successfully! Please remember your password.');
       setHasEncryptionKeys(true);
       setPassword('');
       setConfirmPassword('');
     } catch (error) {
       console.error('Error generating keys:', error);
-      alert('Failed to generate encryption keys');
+      alert('❌ Failed to generate encryption keys');
     } finally {
       setGeneratingKeys(false);
     }
@@ -127,7 +121,7 @@ const DoctorProfile = () => {
   };
 
   const decryptAndDownloadReport = async (report) => {
-    const decryptPassword = prompt('Enter your encryption password:');
+    const decryptPassword = prompt('🔐 Enter your encryption password:');
     
     if (!decryptPassword) {
       return;
@@ -136,7 +130,6 @@ const DoctorProfile = () => {
     try {
       setDecryptingReport(report._id);
 
-      // Get encrypted private key
       const token = localStorage.getItem('token');
       const keyResponse = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/encryption/private-key`,
@@ -147,7 +140,6 @@ const DoctorProfile = () => {
 
       const { encryptedPrivateKey, iv, salt } = keyResponse.data;
 
-      // Decrypt private key
       const privateKeyBase64 = await CryptoManager.decryptPrivateKeyWithPassword(
         encryptedPrivateKey,
         decryptPassword,
@@ -157,7 +149,6 @@ const DoctorProfile = () => {
 
       const privateKey = await CryptoManager.importPrivateKey(privateKeyBase64);
 
-      // Decrypt AES key with RSA private key
       const aesKeyBase64 = await CryptoManager.decryptAESKeyWithRSA(
         report.encryptedKey,
         privateKey
@@ -165,108 +156,190 @@ const DoctorProfile = () => {
 
       const aesKey = await CryptoManager.importAESKey(aesKeyBase64);
 
-      // Download encrypted file from Cloudinary
       const fileResponse = await axios.get(report.fileUrl, {
         responseType: 'arraybuffer'
       });
 
-      // Decrypt file
       const decryptedData = await CryptoManager.decryptFileWithAES(
         fileResponse.data,
         aesKey,
         report.iv
       );
 
-      // Download decrypted file
       await CryptoManager.downloadDecryptedFile(
         decryptedData,
         `${report.reportType}-${report.patientId?.name || 'patient'}.pdf`,
         'application/pdf'
       );
 
-      alert('File decrypted and downloaded successfully!');
+      alert('✅ File decrypted and downloaded successfully!');
     } catch (error) {
       console.error('Error decrypting file:', error);
-      alert('Failed to decrypt file. Please check your password.');
+      alert('❌ Failed to decrypt file. Please check your password.');
     } finally {
       setDecryptingReport(null);
     }
   };
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '60vh',
+        fontSize: '1.2rem',
+        color: 'white'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="loading-spinner" style={{ 
+            width: '40px', 
+            height: '40px',
+            margin: '0 auto 1rem'
+          }}></div>
+          Loading your profile...
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="doctor-profile">
-      <div className="profile-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Doctor Profile</h2>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-      
-      <div className="profile-info">
-        <p><strong>Name:</strong> {profile.name}</p>
-        <p><strong>Specialization:</strong> {profile.specialization}</p>
-        <p><strong>Email:</strong> {profile.email}</p>
-      </div>
-
-      {!hasEncryptionKeys && (
-        <div className="encryption-setup">
-          <h3>Setup Encryption</h3>
-          <p>Generate encryption keys to securely access patient medical records.</p>
-          
-          <div className="form-group">
-            <label>Create Encryption Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Min 8 characters"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Confirm Password:</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Re-enter password"
-            />
-          </div>
-
-          <button onClick={generateEncryptionKeys} disabled={generatingKeys}>
-            {generatingKeys ? 'Generating Keys...' : 'Generate Encryption Keys'}
+      <div className="card">
+        <div className="profile-header">
+          <h2>Doctor Dashboard</h2>
+          <button onClick={handleLogout} className="danger">
+            🚪 Logout
           </button>
         </div>
-      )}
-
-      {hasEncryptionKeys && (
-        <div className="reports-section">
-          <h3>Patient Reports</h3>
-          
-          {reports.length === 0 ? (
-            <p>No reports available</p>
-          ) : (
-            <div className="reports-list">
-              {reports.map((report) => (
-                <div key={report._id} className="report-item">
-                  <p><strong>Type:</strong> {report.reportType}</p>
-                  <p><strong>Patient:</strong> {report.patientId?.name}</p>
-                  <p><strong>Date:</strong> {new Date(report.uploadedAt).toLocaleDateString()}</p>
-                  
-                  <button
-                    onClick={() => decryptAndDownloadReport(report)}
-                    disabled={decryptingReport === report._id}
-                  >
-                    {decryptingReport === report._id ? 'Decrypting...' : '🔓 Decrypt & Download'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+        
+        <div className="profile-info">
+          <p>
+            <strong>👨‍⚕️ Name:</strong> 
+            Dr. {profile.name}
+          </p>
+          <p>
+            <strong>🏥 Specialization:</strong> 
+            {profile.specialization}
+          </p>
+          <p>
+            <strong>📧 Email:</strong> 
+            {profile.email}
+          </p>
         </div>
-      )}
+
+        {!hasEncryptionKeys && (
+          <div className="encryption-setup">
+            <h3>🔐 Setup End-to-End Encryption</h3>
+            <p>
+              Generate encryption keys to securely access patient medical records. 
+              Your private key will be encrypted with a password that only you know.
+            </p>
+            
+            <div className="form-group">
+              <label>Create Encryption Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Minimum 8 characters"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter password"
+              />
+            </div>
+
+            <button onClick={generateEncryptionKeys} disabled={generatingKeys}>
+              {generatingKeys ? (
+                <>
+                  Generating Keys
+                  <span className="loading-spinner"></span>
+                </>
+              ) : (
+                '🔑 Generate Encryption Keys'
+              )}
+            </button>
+            
+            <div style={{ 
+              marginTop: '1rem',
+              padding: '0.75rem',
+              background: 'rgba(255, 193, 7, 0.1)',
+              borderLeft: '4px solid #ffc107',
+              borderRadius: '8px',
+              fontSize: '0.9rem',
+              color: '#856404'
+            }}>
+              ⚠️ <strong>Important:</strong> Remember this password. It cannot be recovered if lost!
+            </div>
+          </div>
+        )}
+
+        {hasEncryptionKeys && (
+          <div className="reports-section">
+            <h3>Patient Medical Reports</h3>
+            
+            {reports.length === 0 ? (
+              <div className="empty-state">
+                No reports available yet
+              </div>
+            ) : (
+              <div className="reports-list">
+                {reports.map((report) => (
+                  <div key={report._id} className="report-item">
+                    <div style={{ marginBottom: '1rem' }}>
+                      <p>
+                        <strong>📋 Type:</strong> 
+                        <span style={{ 
+                          marginLeft: '0.5rem',
+                          padding: '0.25rem 0.75rem',
+                          background: '#667eea15',
+                          borderRadius: '12px',
+                          fontSize: '0.9rem'
+                        }}>
+                          {report.reportType}
+                        </span>
+                      </p>
+                      <p>
+                        <strong>👤 Patient:</strong> 
+                        {report.patientId?.name || 'Unknown'}
+                      </p>
+                      <p>
+                        <strong>📅 Date:</strong> 
+                        {new Date(report.uploadedAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                    
+                    <button
+                      onClick={() => decryptAndDownloadReport(report)}
+                      disabled={decryptingReport === report._id}
+                    >
+                      {decryptingReport === report._id ? (
+                        <>
+                          Decrypting
+                          <span className="loading-spinner"></span>
+                        </>
+                      ) : (
+                        '🔓 Decrypt & Download'
+                      )}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

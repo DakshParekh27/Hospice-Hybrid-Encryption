@@ -21,7 +21,6 @@ const PatientProfile = () => {
 
   const handleLogout = () => {
     Auth.logout();
-    // go to landing page which shows login/register
     navigate('/');
   };
 
@@ -79,82 +78,191 @@ const PatientProfile = () => {
   };
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '60vh',
+        fontSize: '1.2rem',
+        color: 'white'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="loading-spinner" style={{ 
+            width: '40px', 
+            height: '40px',
+            margin: '0 auto 1rem'
+          }}></div>
+          Loading your profile...
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="patient-profile">
-      <div className="profile-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Patient Profile</h2>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-      
-      <div className="profile-info">
-        <p><strong>Name:</strong> {profile.name}</p>
-        <p><strong>Email:</strong> {profile.email}</p>
-        <p><strong>Date of Birth:</strong> {new Date(profile.dateOfBirth).toLocaleDateString()}</p>
-        <p><strong>Blood Group:</strong> {profile.bloodGroup}</p>
-      </div>
-
-      <div className="upload-section">
-        <h3>Upload Medical Report</h3>
+      <div className="card">
+        <div className="profile-header">
+          <h2>Patient Dashboard</h2>
+          <button onClick={handleLogout} className="danger">
+            🚪 Logout
+          </button>
+        </div>
         
-        {!showUpload ? (
-          <>
-            <p>Select a doctor to share your report with:</p>
-            <select 
-              value={selectedDoctor || ''} 
-              onChange={(e) => setSelectedDoctor(e.target.value)}
-            >
-              <option value="">Select Doctor</option>
-              {doctors.map((doctor) => (
-                <option key={doctor._id} value={doctor._id}>
-                  Dr. {doctor.name} - {doctor.specialization}
-                </option>
-              ))}
-            </select>
-            
-            <button
-              onClick={() => setShowUpload(true)}
-              disabled={!selectedDoctor}
-            >
-              Continue to Upload
-            </button>
-          </>
-        ) : (
-          <>
-            <FileUpload
-              patientId={profile._id}
-              doctorId={selectedDoctor}
-              onUploadSuccess={handleUploadSuccess}
-            />
-            <button onClick={() => {
-              setShowUpload(false);
-              setSelectedDoctor(null);
+        <div className="profile-info">
+          <p>
+            <strong>👤 Name:</strong> 
+            {profile.name}
+          </p>
+          <p>
+            <strong>📧 Email:</strong> 
+            {profile.email}
+          </p>
+          <p>
+            <strong>🎂 Date of Birth:</strong> 
+            {new Date(profile.dateOfBirth).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </p>
+          <p>
+            <strong>🩸 Blood Group:</strong> 
+            <span style={{
+              marginLeft: '0.5rem',
+              padding: '0.25rem 0.75rem',
+              background: '#dc354515',
+              color: '#dc3545',
+              borderRadius: '12px',
+              fontWeight: '600'
             }}>
-              Cancel
-            </button>
-          </>
-        )}
-      </div>
+              {profile.bloodGroup}
+            </span>
+          </p>
+        </div>
 
-      <div className="reports-section">
-        <h3>Your Medical Reports</h3>
-        
-        {reports.length === 0 ? (
-          <p>No reports uploaded yet</p>
-        ) : (
-          <div className="reports-list">
-            {reports.map((report) => (
-              <div key={report._id} className="report-item">
-                <p><strong>Type:</strong> {report.reportType}</p>
-                <p><strong>Doctor:</strong> Dr. {report.doctorId?.name}</p>
-                <p><strong>Uploaded:</strong> {new Date(report.uploadedAt).toLocaleDateString()}</p>
-                <p className="encrypted-badge">🔒 Encrypted</p>
+        <div className="upload-section">
+          <h3>Upload Medical Report</h3>
+          
+          {!showUpload ? (
+            <>
+              <p style={{ color: '#666', marginBottom: '1rem' }}>
+                Share your medical reports securely with your doctor using end-to-end encryption.
+              </p>
+              
+              <div className="form-group">
+                <label>Select Doctor to Share With</label>
+                <select 
+                  value={selectedDoctor || ''} 
+                  onChange={(e) => setSelectedDoctor(e.target.value)}
+                >
+                  <option value="">Choose a doctor...</option>
+                  {doctors.map((doctor) => (
+                    <option key={doctor._id} value={doctor._id}>
+                      👨‍⚕️ Dr. {doctor.name} - {doctor.specialization}
+                    </option>
+                  ))}
+                </select>
               </div>
-            ))}
-          </div>
-        )}
+              
+              <button
+                onClick={() => setShowUpload(true)}
+                disabled={!selectedDoctor}
+              >
+                📤 Continue to Upload
+              </button>
+
+              {doctors.length === 0 && (
+                <div style={{
+                  marginTop: '1rem',
+                  padding: '1rem',
+                  background: '#fff3cd',
+                  borderLeft: '4px solid #ffc107',
+                  borderRadius: '8px',
+                  color: '#856404'
+                }}>
+                  ℹ️ No doctors available. Please contact administrator.
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <FileUpload
+                patientId={profile._id}
+                doctorId={selectedDoctor}
+                onUploadSuccess={handleUploadSuccess}
+              />
+              <button 
+                onClick={() => {
+                  setShowUpload(false);
+                  setSelectedDoctor(null);
+                }}
+                className="secondary"
+                style={{ marginTop: '1rem' }}
+              >
+                ← Back to Doctor Selection
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className="reports-section">
+          <h3>Your Medical Reports</h3>
+          
+          {reports.length === 0 ? (
+            <div className="empty-state">
+              No reports uploaded yet
+            </div>
+          ) : (
+            <>
+              <div style={{ 
+                marginBottom: '1rem',
+                padding: '0.75rem',
+                background: '#d4edda',
+                borderLeft: '4px solid #28a745',
+                borderRadius: '8px',
+                color: '#155724',
+                fontSize: '0.9rem'
+              }}>
+                ✅ All reports are encrypted end-to-end. Only you and the designated doctor can access them.
+              </div>
+              
+              <div className="reports-list">
+                {reports.map((report) => (
+                  <div key={report._id} className="report-item">
+                    <div style={{ marginBottom: '0.75rem' }}>
+                      <p>
+                        <strong>📋 Type:</strong> 
+                        <span style={{ 
+                          marginLeft: '0.5rem',
+                          padding: '0.25rem 0.75rem',
+                          background: '#667eea15',
+                          borderRadius: '12px',
+                          fontSize: '0.9rem'
+                        }}>
+                          {report.reportType}
+                        </span>
+                      </p>
+                      <p>
+                        <strong>👨‍⚕️ Shared With:</strong> 
+                        Dr. {report.doctorId?.name || 'Unknown'}
+                      </p>
+                      <p>
+                        <strong>📅 Uploaded:</strong> 
+                        {new Date(report.uploadedAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                    <p className="encrypted-badge">End-to-End Encrypted</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
